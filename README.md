@@ -46,13 +46,20 @@ I use a multi-AI verification approach to catch what single tools miss:
 
 ---
 
-## 📊 Portfolio (Coming Soon)
+## 📋 Audit Portfolio
 
-This space will fill with:
-- 🔍 Public practice audits
-- 📝 Vulnerability write-ups
-- 🛡️ Client testimonials (when delivered)
-- 🏆 Bug bounty findings (when public)
+### Recent Findings
+
+**Finding #002 — Unrestricted Ownership Takeover**  
+*AdminVault.sol* · Critical Severity · 29 June 2026  
+Missing access control on `setOwner()` allowing complete contract takeover.  
+[View full report →](link-to-your-file)
+
+**Finding #001 — Reentrancy Vulnerability**  
+*EtherStore.sol* · Critical Severity · 27 June 2026  
+External call before state update enables recursive withdrawal.  
+[View full report →](link-to-your-file)
+
 
 **First audit target:** [30 days from launch]
 
