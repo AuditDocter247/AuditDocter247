@@ -49,19 +49,26 @@ I use a multi-AI verification approach to catch what single tools miss:
 ## 📋 Audit Portfolio
 
 ### Recent Findings
+Finding 004 — Oracle Manipulation via Spot Price
+*LendingPool.sol · Critical Severity · 09 July 2026*
+Collateral over-valuation via manipulable single-pool spot price, enabling flash-loan-funded over-borrowing.
+[View full report →](https://auditdocter247.github.io/Audit-Portfolio/finding-004-lendingpool-oracle-manipulation.html)
 
-**Finding #002 — Unrestricted Ownership Takeover**  
+Finding 003 — Unprotected Initialiser Front-Running
+*DeFiTreasury.sol · Critical Severity · 05 July 2026*
+Ownership hijack via race condition on an unguarded initialise() function in a proxy pattern.
+[View full report →](https://auditdocter247.github.io/Audit-Portfolio/finding-003-defitreasury-initialise.html)
+Finding 002 — Unrestricted Ownership Takeover  
 *AdminVault.sol* · Critical Severity · 29 June 2026  
 Missing access control on `setOwner()` allowing complete contract takeover.  
 [View full report →](link-to-your-file)
 
-**Finding #001 — Reentrancy Vulnerability**  
+Finding 001 — Reentrancy Vulnerability  
 *EtherStore.sol* · Critical Severity · 27 June 2026  
 External call before state update enables recursive withdrawal.  
 [View full report →](link-to-your-file)
 
-
-**First audit target:** [30 days from launch]
+Currently reviewing live contracts and monitoring CodeHawks, Sherlock, and Immunefi for my first competitive audit entry.
 
 ---
 
