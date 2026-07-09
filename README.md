@@ -58,6 +58,8 @@ Finding 003 — Unprotected Initialiser Front-Running
 *DeFiTreasury.sol · Critical Severity · 05 July 2026*
 Ownership hijack via race condition on an unguarded initialise() function in a proxy pattern.
 [View full report →](https://auditdocter247.github.io/Audit-Portfolio/finding-003-defitreasury-initialise.html)
+
+
 Finding 002 — Unrestricted Ownership Takeover  
 *AdminVault.sol* · Critical Severity · 29 June 2026  
 Missing access control on `setOwner()` allowing complete contract takeover.  
