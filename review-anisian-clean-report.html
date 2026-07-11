@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clean Review — Anisian (ANI) | 247 Audit Doctor</title>
+  <style>
+    :root {
+      --bg:          #0d0f14;
+      --surface:     #13161e;
+      --border:      #1e2330;
+      --accent:      #3aad7a;          /* green — clean review, not red */
+      --accent-dim:  rgba(58,173,122,.12);
+      --gold:        #c9993a;
+      --green:       #3aad7a;
+      --text:        #d4d8e2;
+      --muted:       #6b7385;
+      --code-bg:     #0a0c11;
+      --font-mono:   'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      --font-body:   'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .page { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+
+    .header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 40px; }
+
+    .brand-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+    }
+
+    .brand {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .brand span { color: var(--accent); }
+
+    .report-meta {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted); text-align: right;
+    }
+
+    .finding-id {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em;
+      color: var(--muted); text-transform: uppercase; margin-bottom: 12px;
+    }
+
+    .finding-title {
+      font-size: 26px; font-weight: 700; line-height: 1.25; color: #eceef3;
+      margin-bottom: 20px; letter-spacing: -.01em;
+    }
+
+    .contract-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+
+    .tag {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em;
+      padding: 3px 10px; border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
+    }
+    .tag.contract { color: #8ab4f8; border-color: rgba(138,180,248,.25); }
+    .tag.source   { color: var(--muted); }
+
+    .severity-banner {
+      display: flex; align-items: flex-start; gap: 20px;
+      background: var(--accent-dim); border: 1px solid var(--accent);
+      border-radius: 6px; padding: 20px 24px;
+    }
+
+    .severity-pill {
+      flex-shrink: 0; background: var(--accent); color: #06120c;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase; padding: 5px 14px;
+      border-radius: 3px; margin-top: 2px;
+    }
+
+    .severity-text { font-size: 14px; color: #c8ccd8; line-height: 1.6; }
+
+    .section { margin-bottom: 44px; }
+
+    .section-label {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::after { content: ''; display: block; flex: 1; height: 1px; background: var(--border); }
+
+    .prose p { color: #b8bcc8; margin-bottom: 14px; }
+    .prose p:last-child { margin-bottom: 0; }
+
+    .code-wrap {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; margin-top: 4px;
+    }
+
+    .code-label {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em;
+      text-transform: uppercase; padding: 8px 16px; background: #111318;
+      border-bottom: 1px solid var(--border); color: var(--muted);
+    }
+    .code-label.fixed { color: var(--green); }
+
+    pre {
+      font-family: var(--font-mono); font-size: 13px; line-height: 1.65;
+      padding: 20px 24px; overflow-x: auto; color: #c9d1e0; tab-size: 4;
+    }
+
+    .cm { color: var(--muted); font-style: italic; }
+    .kw { color: #bb88f5; }
+    .fn { color: #7cb9f5; }
+    .ty { color: #5fc8a8; }
+    .st { color: #e5a96a; }
+
+    .check-list { list-style: none; margin-top: 14px; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid var(--border); color: #b8bcc8; font-size: 14px;
+    }
+    .check-list li:last-child { border-bottom: none; }
+    .check-list li::before {
+      content: '✓'; color: var(--accent); flex-shrink: 0; margin-top: 1px; font-weight: 700;
+    }
+    .check-list li strong { color: #d4d8e2; }
+
+    .obs-list { list-style: none; margin-top: 14px; }
+    .obs-list li {
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid var(--border); color: #b8bcc8; font-size: 14px;
+    }
+    .obs-list li:last-child { border-bottom: none; }
+    .obs-list li::before { content: '▸'; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+    .rec-note {
+      background: rgba(58,173,122,.07); border-left: 3px solid var(--green);
+      border-radius: 0 4px 4px 0; padding: 14px 18px; font-size: 13.5px; color: #a8c8b8; margin-top: 24px;
+    }
+    .rec-note strong {
+      color: var(--green); display: block; font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px;
+    }
+
+    .footer {
+      margin-top: 60px; padding-top: 28px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .footer-brand span { color: var(--accent); }
+    .footer-meta {
+      font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+      text-align: right; line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 28px 18px 60px; }
+      .finding-title { font-size: 20px; }
+      .severity-banner { flex-direction: column; gap: 12px; }
+      .brand-row { flex-direction: column; align-items: flex-start; }
+      .report-meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="brand-row">
+      <div class="brand"><span>247</span> Audit Doctor</div>
+      <div class="report-meta">
+        Independent Review<br>
+        11 July 2026
+      </div>
+    </div>
+
+    <div class="finding-id">Independent Review — Live Contract Assessment</div>
+
+    <h1 class="finding-title">
+      Anisian (ANI) — Verification of Claimed<br>Security Properties
+    </h1>
+
+    <div class="contract-row">
+      <span class="tag contract">Anisian.sol</span>
+      <span class="tag source">Live Contract — Base Mainnet</span>
+      <span class="tag source">Independent Review, No Client Engagement</span>
+    </div>
+
+    <div class="severity-banner">
+      <div class="severity-pill">No Issues Found</div>
+      <div class="severity-text">
+        This is a self-directed review of a real, deployed contract, undertaken as independent
+        practice — not a paid engagement. The project's public documentation makes four specific,
+        falsifiable claims about its security properties. Each was individually verified against
+        the actual source code. All four claims were found to be accurate.
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Context ── -->
+  <section class="section">
+    <div class="section-label">Context & Purpose</div>
+    <div class="prose">
+      <p>
+        Anisian (ANI) is a fixed-supply ERC-20 token deployed on Base, publicly described by its
+        team as <em>"fixed-supply, immutable ERC-20 on Base with deflationary halving burn
+        schedule. No admin, no mint, no pause, no upgrade."</em>
+      </p>
+      <p>
+        Bold, specific security claims like this are exactly the kind of statement worth
+        independently verifying — a claim is only as good as the code behind it. This review sets
+        out to check each stated property directly against the deployed contract's source, rather
+        than take the description at face value.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Claims Verified ── -->
+  <section class="section">
+    <div class="section-label">Claims Verified</div>
+    <ul class="check-list">
+      <li>
+        <strong>"No mint"</strong> — Confirmed. <code style="font-family:var(--font-mono);font-size:12px;">_mint()</code>
+        is called exactly once, inside the constructor, minting the full 100,000,000 ANI fixed
+        supply. No other function in the contract calls <code style="font-family:var(--font-mono);font-size:12px;">_mint</code>,
+        and no mechanism exists to increase supply post-deployment.
+      </li>
+      <li>
+        <strong>"No admin"</strong> — Confirmed. The contract does not inherit
+        <code style="font-family:var(--font-mono);font-size:12px;">Ownable</code> or implement any
+        equivalent privileged-caller pattern. The one setup function,
+        <code style="font-family:var(--font-mono);font-size:12px;">initialize()</code>, is
+        restricted to the original deployer, runs exactly once, and permanently locks via an
+        <code style="font-family:var(--font-mono);font-size:12px;">AlreadyInitialized</code> guard —
+        after which no address, including the original deployer, retains any privileged capability.
+      </li>
+      <li>
+        <strong>"No pause"</strong> — Confirmed. No pause mechanism, modifier, or state flag
+        exists anywhere in the contract that could halt transfers.
+      </li>
+      <li>
+        <strong>"No upgrade"</strong> — Confirmed. The contract is a standalone, non-proxy
+        deployment with no delegatecall pattern, no implementation-address storage slot, and no
+        upgrade function of any kind.
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── Initializer Safety ── -->
+  <section class="section">
+    <div class="section-label">Initializer Safety — Positive Pattern</div>
+    <div class="prose">
+      <p>
+        Worth specifically noting: <code style="font-family:var(--font-mono);font-size:12.5px;">initialize()</code>
+        follows the correct pattern for this bug class — unlike a vulnerable proxy initializer
+        (see Finding #003 in this portfolio, where a race condition allowed anyone to claim
+        ownership), Anisian's initializer is protected because <code style="font-family:var(--font-mono);font-size:12px;">_initializer</code>
+        is set inside the <strong>constructor</strong>, atomically at deployment. There is no
+        window during which an uninitialised, publicly-callable contract exists on-chain.
+      </p>
+    </div>
+    <div class="code-wrap">
+      <div class="code-label fixed">Anisian.sol — Correctly Guarded Initializer</div>
+      <pre><span class="kw">constructor</span>() ERC20(<span class="st">"Anisian"</span>, <span class="st">"ANI"</span>) {
+    _initializer = msg.sender; <span class="cm">// ✅ set atomically at deployment — no front-running window</span>
+    _mint(msg.sender, INITIAL_SUPPLY);
+}
+
+<span class="kw">function</span> <span class="fn">initialize</span>(<span class="ty">address</span> vault, <span class="ty">address</span> pool, <span class="ty">address</span> ownerWallet) <span class="kw">external</span> {
+    <span class="kw">if</span> (msg.sender != _initializer) <span class="kw">revert</span> NotInitializer(); <span class="cm">// ✅ caller-restricted</span>
+    <span class="kw">if</span> (_initialized) <span class="kw">revert</span> AlreadyInitialized();      <span class="cm">// ✅ one-shot, permanently locked</span>
+    _initialized = <span class="kw">true</span>;
+    ...
+}</pre>
+    </div>
+  </section>
+
+  <!-- ── Observation (Non-Finding) ── -->
+  <section class="section">
+    <div class="section-label">Observation — Not a Finding</div>
+    <div class="prose">
+      <p>
+        One design limitation was identified during review and is documented here for
+        completeness, though it does not constitute a valid finding:
+      </p>
+    </div>
+    <ul class="obs-list">
+      <li>
+        The launch-phase buy limits (<code style="font-family:var(--font-mono);font-size:12px;">MAX_BUY_AMOUNT</code>,
+        <code style="font-family:var(--font-mono);font-size:12px;">MAX_WALLET_AMOUNT</code>) are
+        enforced per-address. An actor controlling multiple wallets could distribute purchases
+        across them to exceed the intended per-entity accumulation limit during the 90-day
+        protection window.
+      </li>
+    </ul>
+    <div class="rec-note">
+      <strong>Why This Is Not Reported as a Finding</strong>
+      Per-wallet rate limiting is a well-understood, universal constraint of any address-based
+      system — no on-chain mechanism can determine that two distinct addresses are controlled by
+      the same individual. The project's own documentation does not claim sybil-resistance; it
+      describes a buy limit, and the buy limit functions exactly as implemented. The applicable
+      audit test — did the contract fail to enforce a guarantee it explicitly made? — is not met
+      here. This is included purely as a transparency note, not a criticism.
+    </div>
+  </section>
+
+  <!-- ── Conclusion ── -->
+  <section class="section">
+    <div class="section-label">Conclusion</div>
+    <div class="prose">
+      <p>
+        Based on this independent review, Anisian's publicly stated security properties are
+        accurate as implemented. The contract demonstrates disciplined engineering: a correctly
+        atomic initializer, a genuinely fixed supply, and the deliberate absence of privileged
+        post-deployment control — properties that are often claimed but rarely fully upheld under
+        direct code inspection.
+      </p>
+      <p style="font-size:13px;color:var(--muted);">
+        This review is independent and unpaid, conducted for portfolio and practice purposes. It
+        does not constitute a formal, comprehensive audit and should not be relied upon as one.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-brand"><span>247</span> Audit Doctor</div>
+    <div class="footer-meta">
+      Independent Review — Portfolio Series<br>
+      Auditor: Edwyn — 247 Audit Doctor (UK)<br>
+      Format: Secureum Audit Findings 101
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
