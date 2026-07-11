@@ -70,6 +70,14 @@ Finding 001 — Reentrancy Vulnerability
 External call before state update enables recursive withdrawal.  
 [View full report →](link-to-your-file)
 
+ 🔍 Independent Reviews
+
+Anisian (ANI) — Clean Review
+*Live contract on Base · 11 July 2026*
+Verified all four publicly-claimed security properties (no mint, no admin, no pause, no upgrade) against deployed source. All confirmed accurate.
+[View full report →](https://auditdocter247.github.io/Audit-Portfolio/review-anisian-clean-report.html)
+
+
 Currently reviewing live contracts and monitoring CodeHawks, Sherlock, and Immunefi for my first competitive audit entry.
 
 ---
