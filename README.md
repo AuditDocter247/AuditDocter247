@@ -18,6 +18,12 @@ Every finding in my portfolio below was reasoned through by hand and written up 
 
 ### Findings
 
+**Finding #005 — Permanent Denial of Service via Push-Payment Loop**
+*InvestmentPool.sol · High · 19 July 2026*
+A single ETH-rejecting contract in the investor array permanently freezes all deposits by reverting the refund loop for everyone.
+[View report →](https://auditdocter247.github.io/Audit-Portfolio/finding-005-dos-push-payment-loop.html)
+
+
 **Finding #004 — Oracle Manipulation via Spot Price**
 *LendingPool.sol · Critical · 09 July 2026*
 Collateral over-valuation via a manipulable single-pool spot price, enabling flash-loan-funded over-borrowing.
